@@ -9,7 +9,7 @@ graph TD
     subgraph SQLi_Pipeline["SQL Injection Query Construction Breakdown"]
         direction TB
         
-        Code["Developer Dynamic Query Construction:<br/>query = 'SELECT * FROM users WHERE user="' + input_user + '" AND pass="' + input_pass + '";'"]
+        Code["Developer Dynamic Query Construction:<br/>query = 'SELECT * FROM users WHERE user=' + input_user + ' AND pass=' + input_pass;"]
         Input["Attacker Input:<br/>input_user = admin' -- <br/>input_pass = irrelevant"]
         Result["Resulting Query Evaluated by SQL Engine:<br/>SELECT * FROM users WHERE user='admin' -- ' AND pass='irrelevant';"]
         Bypass["Parser Interpretation:<br/>1. Compares user == 'admin'<br/>2. Treats '--' as comment delimiter<br/>3. Ignores remaining password verification entirely!"]

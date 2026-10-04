@@ -114,8 +114,8 @@ graph TD
         PolicyDB -->|Rule Exists: Allow| AllowAccess["Update AVC & Grant Read Handle"]
         
         LogDeny --> EnforcingCheck{"Current Mode == Enforcing?"}
-        EnforcingCheck -->|YES (Enforcing)| Block["Return -EACCES (Operation Aborted)"]
-        EnforcingCheck -->|NO (Permissive)| AllowPermissive["Allow Operation (Audit Log Only)"]
+        EnforcingCheck -->|"YES (Enforcing)"| Block["Return -EACCES (Operation Aborted)"]
+        EnforcingCheck -->|"NO (Permissive)"| AllowPermissive["Allow Operation (Audit Log Only)"]
     end
     
     style SELinux_AVC_Decision fill:#fdfefe,stroke:#2c3e50,stroke-width:2px;

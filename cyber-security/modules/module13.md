@@ -106,8 +106,8 @@ graph TD
         Decision{"Matches Allowed Syscall Whitelist?"}
         BPF_Filter --> Decision
         
-        Decision -->|ALLOWED (e.g., read, write)| ExecSyscall["Kernel Executes System Call"]
-        Decision -->|DENIED / PROHIBITED| Action{"Configured Seccomp Action"}
+        Decision -->|"ALLOWED (e.g., read, write)"| ExecSyscall["Kernel Executes System Call"]
+        Decision -->|"DENIED / PROHIBITED"| Action{"Configured Seccomp Action"}
         
         Action -->|SECCOMP_RET_KILL_PROCESS| Kill["Kernel Instantly Terminates Process (SIGSYS)"]
         Action -->|SECCOMP_RET_ERRNO| ReturnErr["Returns -EPERM to Process without executing"]

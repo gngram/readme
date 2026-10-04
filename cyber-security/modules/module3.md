@@ -57,8 +57,8 @@ graph TD
         Victim -->|"1. Query: b64enc_chunk1.malicious.net"| Resolver
         Resolver -->|"2. Recursive Lookup via Root/TLD"| Authoritative
         Authoritative -->|"3. Reassembles Exfiltrated Base64 Data"| C2_App
-        Authoritative -->>|"4. Returns TXT Record with Staged Command"| Resolver
-        Resolver -->>|"5. Delivers Command Payload"| Victim
+        Authoritative -.->|"4. Returns TXT Record with Staged Command"| Resolver
+        Resolver -.->|"5. Delivers Command Payload"| Victim
     end
     
     style DNS_Tunneling_Architecture fill:#f9f9f9,stroke:#34495e,stroke-width:2px;

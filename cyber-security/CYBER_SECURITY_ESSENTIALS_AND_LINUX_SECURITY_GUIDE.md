@@ -647,7 +647,7 @@ The PE file format (derived from Common Object File Format - COFF) structures al
 +---------------------------------------------------------------------------------+
 | DOS Stub ("This program cannot be run in DOS mode")                             |
 +---------------------------------------------------------------------------------+
-| PE NT Headers (Signature = 'PE  ' = 0x00004550)                               |
+| PE NT Headers (Signature = 'PE\0\0' = 0x00004550)                               |
 | +-----------------------------------------------------------------------------+ |
 | | File Header (COFF): Machine, NumberOfSections, TimeDateStamp                | |
 | +-----------------------------------------------------------------------------+ |
@@ -734,8 +734,8 @@ graph TD
         Victim -->|"1. Query: b64enc_chunk1.malicious.net"| Resolver
         Resolver -->|"2. Recursive Lookup via Root/TLD"| Authoritative
         Authoritative -->|"3. Reassembles Exfiltrated Base64 Data"| C2_App
-        Authoritative -->>|"4. Returns TXT Record with Staged Command"| Resolver
-        Resolver -->>|"5. Delivers Command Payload"| Victim
+        Authoritative -.->|"4. Returns TXT Record with Staged Command"| Resolver
+        Resolver -.->|"5. Delivers Command Payload"| Victim
     end
     
     style DNS_Tunneling_Architecture fill:#f9f9f9,stroke:#34495e,stroke-width:2px;
@@ -1297,7 +1297,7 @@ graph TD
     subgraph SQLi_Pipeline["SQL Injection Query Construction Breakdown"]
         direction TB
         
-        Code["Developer Dynamic Query Construction:<br/>query = 'SELECT * FROM users WHERE user="' + input_user + '" AND pass="' + input_pass + '";'"]
+        Code["Developer Dynamic Query Construction:<br/>query = 'SELECT * FROM users WHERE user=' + input_user + ' AND pass=' + input_pass;"]
         Input["Attacker Input:<br/>input_user = admin' -- <br/>input_pass = irrelevant"]
         Result["Resulting Query Evaluated by SQL Engine:<br/>SELECT * FROM users WHERE user='admin' -- ' AND pass='irrelevant';"]
         Bypass["Parser Interpretation:<br/>1. Compares user == 'admin'<br/>2. Treats '--' as comment delimiter<br/>3. Ignores remaining password verification entirely!"]
@@ -2173,8 +2173,8 @@ graph TD
         PolicyDB -->|Rule Exists: Allow| AllowAccess["Update AVC & Grant Read Handle"]
         
         LogDeny --> EnforcingCheck{"Current Mode == Enforcing?"}
-        EnforcingCheck -->|YES (Enforcing)| Block["Return -EACCES (Operation Aborted)"]
-        EnforcingCheck -->|NO (Permissive)| AllowPermissive["Allow Operation (Audit Log Only)"]
+        EnforcingCheck -->|"YES (Enforcing)"| Block["Return -EACCES (Operation Aborted)"]
+        EnforcingCheck -->|"NO (Permissive)"| AllowPermissive["Allow Operation (Audit Log Only)"]
     end
     
     style SELinux_AVC_Decision fill:#fdfefe,stroke:#2c3e50,stroke-width:2px;
@@ -2568,8 +2568,8 @@ graph TD
         Decision{"Matches Allowed Syscall Whitelist?"}
         BPF_Filter --> Decision
         
-        Decision -->|ALLOWED (e.g., read, write)| ExecSyscall["Kernel Executes System Call"]
-        Decision -->|DENIED / PROHIBITED| Action{"Configured Seccomp Action"}
+        Decision -->|"ALLOWED (e.g., read, write)"| ExecSyscall["Kernel Executes System Call"]
+        Decision -->|"DENIED / PROHIBITED"| Action{"Configured Seccomp Action"}
         
         Action -->|SECCOMP_RET_KILL_PROCESS| Kill["Kernel Instantly Terminates Process (SIGSYS)"]
         Action -->|SECCOMP_RET_ERRNO| ReturnErr["Returns -EPERM to Process without executing"]
